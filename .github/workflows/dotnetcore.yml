@@ -1,0 +1,31 @@
+name: .NET Core
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 3.1.101
+    - name: Build with dotnet
+      run: |
+        cd src
+        cd Multiverse
+        dotnet build -c Release -o out
+        cd ..
+        cd ..
+        
+    - name: Push to NuGet
+      run: |
+        cd src
+        cd Multiverse
+        dotnet pack -c Release -o out Multiverse.csproj
+        dotnet nuget push out/*.nupkg -k ${NUGET_TOKEN} -s https://api.nuget.org/v3/index.json
+      env:
+          NUGET_TOKEN: ${{ secrets.NUGET_TOKEN }}
