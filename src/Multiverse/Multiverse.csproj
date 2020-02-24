@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="OpenMiNET.OpenAPI" Version="1.0.53" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="World\Generators" />
+    </ItemGroup>
+
+</Project>
