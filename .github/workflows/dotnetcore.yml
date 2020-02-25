@@ -25,7 +25,8 @@ jobs:
       run: |
         cd src
         cd Multiverse
-        dotnet pack -c Release -o out Multiverse.csproj
+        dotnet pack -c Release -o out /p:PackageVersion=$(date +%Y%m%d%H%M%S) Multiverse.csproj
         dotnet nuget push out/*.nupkg -k ${NUGET_TOKEN} -s https://api.nuget.org/v3/index.json
+      shell: bash
       env:
           NUGET_TOKEN: ${{ secrets.NUGET_TOKEN }}
