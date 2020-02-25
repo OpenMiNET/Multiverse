@@ -5,7 +5,7 @@ on: [push]
 jobs:
   build:
 
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
     - uses: actions/checkout@v2
@@ -15,10 +15,12 @@ jobs:
         dotnet-version: 3.1.101
       
     - name: Install NuGet client
-      uses: olegtarasov/download-nuget@v1
+      uses: nuget/setup-nuget@v1.0.2
+      with:
+        nuget-version: latest
       
     - name: Add GitHub registry to NuGet
-      run: mono $NUGET_EXE sources add -name "GPR" -Source "https://nuget.pkg.github.com/OpenMiNET/index.json" -Username OpenMiNET -Password ${{ secrets.GITHUB_TOKEN }}
+      run: nuget sources add -name "GPR" -Source "https://nuget.pkg.github.com/OpenMiNET/index.json" -Username OpenMiNET -Password ${{ secrets.GITHUB_TOKEN }}
       
     - name: Build with dotnet
       run: |
@@ -34,7 +36,7 @@ jobs:
         cd Multiverse
         dotnet pack -c Release -o out /p:PackageVersion=$(date +%Y.%m.%d.%H%M%S) Multiverse.csproj
         dotnet nuget push out/*.nupkg -k ${NUGET_TOKEN} -s https://api.nuget.org/v3/index.json
-        mono $NUGET_EXE push out/*.nupkg -Source "GPR"
+        nuget push out/*.nupkg -Source "GPR"
       shell: bash
       env:
           NUGET_TOKEN: ${{ secrets.NUGET_TOKEN }}
