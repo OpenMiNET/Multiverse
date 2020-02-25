@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using log4net;
 using MiNET.Utils;
 using MiNET.Worlds;
@@ -7,6 +8,8 @@ using Multiverse.World;
 using OpenAPI;
 using OpenAPI.Events;
 using OpenAPI.Events.Player;
+using OpenAPI.Events.Plugins;
+using OpenAPI.Events.Server;
 using OpenAPI.Permission;
 using OpenAPI.Plugins;
 
@@ -95,6 +98,21 @@ namespace Multiverse
                 
                 e.Player.RefreshCommands();
             }
+        }
+
+        [EventHandler(EventPriority.Monitor)]
+        public void OnServerReady(ServerReadyEvent e)
+        {
+            var searchName = typeof(OpenAPI.OpenApi).Assembly.GetName().Name;
+            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
+            {
+                if (assembly.GetReferencedAssemblies().Any(x =>
+                    x.FullName.Contains("MiNET", StringComparison.InvariantCultureIgnoreCase) ||
+                    x.Name.Equals(searchName)))
+                    GeneratorManager.AutoRegister(assembly);
+            }
+
+            MultiVerseManager.Load();
         }
     }
 }

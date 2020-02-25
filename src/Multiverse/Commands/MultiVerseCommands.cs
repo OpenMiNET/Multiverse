@@ -30,7 +30,11 @@ namespace Multiverse.Commands
                 return;
             }
 
-            switch (Plugin.MultiVerseManager.Create(levelname, generator))
+            switch (Plugin.MultiVerseManager.Create(levelname, generator, (mv) =>
+            {
+                if (mv.Ready)
+                    player.SendPluginMessage("The world has been created, you can join it by typing '/mv join {levelname}'. You may now create new worlds again!");
+            }))
             {
                 case CreateResult.InvalidWorldGenerator:
                     player.SendPluginMessage(
@@ -42,9 +46,18 @@ namespace Multiverse.Commands
                 case CreateResult.UnknownError:
                     player.SendPluginMessage($"Something unexpected happened while trying to create your world!");
                     break;
-                case CreateResult.Created:
+                case CreateResult.Initializing:
                     player.SendPluginMessage(
-                        $"The world has been created, you can join it by typing /mv join {levelname}");
+                        $"Initializing world... We will let you know once we are done!");
+                    break;
+                case CreateResult.Busy:
+                    player.SendPluginMessage($"Cannot handle your request, server is busy...");
+                    break;
+                case CreateResult.WorldExists:
+                    player.SendPluginMessage($"The world already exists, maybe you meant to execute '/mv load {levelname}'");
+                    break;
+                case CreateResult.GeneratorUnavailable:
+                    
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();

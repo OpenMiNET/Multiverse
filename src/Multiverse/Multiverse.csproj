@@ -13,7 +13,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="OpenMiNET.OpenAPI" Version="1.0.53" />
+      <PackageReference Include="OpenMiNET.OpenAPI" Version="1.0.55" />
     </ItemGroup>
 
     <ItemGroup>
