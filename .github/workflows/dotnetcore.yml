@@ -17,6 +17,9 @@ jobs:
     - name: Install NuGet client
       uses: olegtarasov/download-nuget@v1
       
+    - name: Add GitHub registry to NuGet
+      run: mono $NUGET_EXE sources add -name "GPR" -Source "https://nuget.pkg.github.com/OpenMiNET/index.json" -Username OpenMiNET -Password ${{ secrets.GITHUB_TOKEN }}
+      
     - name: Build with dotnet
       run: |
         cd src
@@ -24,9 +27,6 @@ jobs:
         dotnet build -c Release -o out
         cd ..
         cd ..
-        
-    - name: Add private GitHub registry to NuGet
-      run: mono $NUGET_EXE sources add -name "GPR" -Source https://nuget.pkg.github.com/OpenMiNET/index.json -Username OpenMiNET -Password ${{ secrets.GITHUB_TOKEN }}
         
     - name: Push to NuGet
       run: |
