@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <TargetFramework>net5.0</TargetFramework>
         <PackageId>OpenMiNET.Multiverse</PackageId>
         <Version>0.0.0</Version>
         <Authors>Kenny van Vulpen</Authors>
@@ -13,7 +13,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="OpenMiNET.OpenAPI" Version="1.0.55" />
+      <PackageReference Include="OpenMiNET.OpenAPI" Version="1.0.83" />
     </ItemGroup>
 
     <ItemGroup>
